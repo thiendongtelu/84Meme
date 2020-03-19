@@ -13,14 +13,12 @@ class App extends React.Component {
   send = async () => {
 
     try {
+      console.log('clicked')
       const formData = new FormData();
-      const image = document.querySelector('input').value;
-      console.log(image);
-      axios.post('/img', {image}).then(result=>console.log(result.data));
       
-      // axios.post(`https://api.imgbb.com/1/upload?key=430f22ae6e75ba471e67081eec99d78b&image=${file}`)
-      //   .then(result => console.log(result))
-      //   .catch(error => console.log(error));
+      const image = document.querySelector('input').files[0];
+      formData.append("image", image);
+      axios.post('/img',formData).then(result=>console.log(result));
     } catch (error) {
       console.log(error);
     }
@@ -28,7 +26,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/helloworld')
+    axios.get('/api/helloworld',{alo:1234})
       .then(result => console.log(result))
       .catch(error => console.log(error));
       
@@ -37,8 +35,8 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <input type='text' />
-        {/* <input type='file' /> */}
+        {/* <input type='text' /> */}
+        <input type='file' />
         <button onClick={this.send}>Send</button>
       </div>
     );
