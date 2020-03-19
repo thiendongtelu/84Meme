@@ -9,16 +9,24 @@ import axios from 'axios';
 // });
 
 class App extends React.Component {
+  state = {
+    image: null,
+    caption: null
+  }
 
-  send = async () => {
+  send = async (event) => {
+    event.preventDefault();
 
     try {
       console.log('clicked')
       const formData = new FormData();
-      
-      const image = document.querySelector('input').files[0];
+
+      const image = document.querySelectorAll('input')[1].files[0];
+      const caption = document.querySelector('input').value;
       formData.append("image", image);
-      axios.post('/img',formData).then(result=>console.log(result));
+      const imgData = await (await axios.post('https://api.imgbb.com/1/upload?key=430f22ae6e75ba471e67081eec99d78b', formData)).data.data;
+      console.log(imgData);
+      await axios.post('/img',{caption,imgData});
     } catch (error) {
       console.log(error);
     }
@@ -26,18 +34,22 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/helloworld',{alo:1234})
+    axios.get('/api/helloworld', { alo: 1234 })
       .then(result => console.log(result))
       .catch(error => console.log(error));
-      
+
   }
 
   render() {
     return (
       <div className="App">
-        {/* <input type='text' /> */}
-        <input type='file' />
-        <button onClick={this.send}>Send</button>
+        <form onSubmit={this.send}>
+          <label>Caption</label>
+          <input name='Caption' type='text' />
+          <label>Image</label>
+          <input name='Image' type='file' />
+          <button type='submit'>Send</button>
+        </form>
       </div>
     );
   }
