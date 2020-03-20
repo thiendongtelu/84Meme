@@ -1,16 +1,13 @@
 const express = require('express');
 
-const imageRouter = require('./router/image-router');
 
 
-
-require('./db/mongoose');
 
 const app = express();
 
 app.use(express.json());
 
-app.use(imageRouter)
+
 
 
 

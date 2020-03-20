@@ -1,5 +1,13 @@
 import React from 'react';
 import axios from 'axios';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+
+import Home from './pages/home.component';
+import Header from './components/header/header.component';
 
 // const toBase64 = file => new Promise((resolve, reject) => {
 //   const reader = new FileReader();
@@ -26,7 +34,7 @@ class App extends React.Component {
       formData.append("image", image);
       const imgData = await (await axios.post('https://api.imgbb.com/1/upload?key=430f22ae6e75ba471e67081eec99d78b', formData)).data.data;
       console.log(imgData);
-      await axios.post('/img',{caption,imgData});
+      await axios.post('/img', { caption, imgData });
     } catch (error) {
       console.log(error);
     }
@@ -43,13 +51,12 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <form onSubmit={this.send}>
-          <label>Caption</label>
-          <input name='Caption' type='text' />
-          <label>Image</label>
-          <input name='Image' type='file' />
-          <button type='submit'>Send</button>
-        </form>
+        <Router>
+          <Header />
+          <Switch>
+            <Route exact path='/' component={Home} />
+          </Switch>
+        </Router>
       </div>
     );
   }
